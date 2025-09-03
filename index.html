@@ -1,265 +1,209 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penagos | Galería de Modelos</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Penagos | Galería de Modelos</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://www.lookiar.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://www.lookiar.com">
+  <link rel="preconnect" href="https://ajax.googleapis.com">
 
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #ffffff;
-            --bg-light-gray: #f7f7ff;
-            --primary-text-color: #1d1d1f;
-            --secondary-text-color: #555555;
-            --accent-color: #FAB900;
-            --penagos-blue: #00AEEF;
-            --penagos-purple: #4D2D8F;
-            --border-color: #e5e5e5;
-            --font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
-            --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
-            --header-height: 70px;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: var(--font-family);
-            background-color: var(--bg-color);
-            color: var(--primary-text-color);
-            overflow-x: hidden;
-            padding-top: var(--header-height);
-            padding-bottom: 100px;
-        }
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --bg-light-gray: #f7f7ff;
+      --primary-text-color: #1d1d1f;
+      --secondary-text-color: #555555;
+      --accent-color: #FAB900;
+      --penagos-blue: #00AEEF;
+      --penagos-purple: #4D2D8F;
+      --border-color: #e5e5e5;
+      --font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+      --header-height: 70px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-color);
+      color: var(--primary-text-color);
+      overflow-x: hidden;
+      padding-top: var(--header-height);
+      padding-bottom: 100px;
+    }
 
-        #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: var(--bg-light-gray); z-index: 1000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.8s ease-out 0.8s, visibility 0s 1.6s;
-        }
-        #splash-screen.hidden { opacity: 0; visibility: hidden; }
-        .page-content { clip-path: circle(0% at 50% 50%); transition: clip-path 1.2s var(--ease-out-quint) 0.5s; }
-        .page-content.visible { clip-path: circle(150% at 50% 50%); }
-        .splash-content { text-align: center; }
-        .splash-logo img { width: 250px; height: auto; margin-bottom: 20px; opacity: 0; animation: item-fade-in 1s ease-out forwards 0.2s; }
-        .splash-slogan { font-size: 1.6rem; font-weight: 700; color: var(--penagos-purple); opacity: 0; animation: item-fade-in 1s ease-out forwards 0.6s; }
-        .splash-loader { position: absolute; bottom: 40px; opacity: 0; animation: item-fade-in 1s ease-out forwards 1.2s; display: flex; align-items: center; gap: 10px; color: var(--secondary-text-color); }
-        .splash-loader svg { width: 22px; height: 22px; fill: currentColor; }
-        .splash-loader p { font-size: 0.9rem; font-weight: 500; }
-        .splash-loader a { color: var(--primary-text-color); text-decoration: none; font-weight: 700; }
-        @keyframes item-fade-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 
-        .main-header {
-            position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height); z-index: 100;
-            background-color: rgba(255, 255, 255, 0.95);
-            border-bottom: 1px solid var(--border-color);
-            display: flex; align-items: center; justify-content: center;
-            will-change: background-color;
-        }
-        .logo img { height: 40px; width: auto; display: block; }
-        .cta-button, .secondary-button {
-            text-decoration: none; padding: 12px 28px; border-radius: 100px;
-            font-weight: 700; font-size: 1rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: inline-block; border: none; cursor: pointer;
-            will-change: transform;
-            color: var(--primary-text-color);
-        }
-        .cta-button { background-color: var(--accent-color); }
-        .cta-button:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .secondary-button { background-color: var(--bg-color); border: 1px solid var(--border-color); }
-        .secondary-button:hover { background-color: var(--primary-text-color); color: var(--bg-color); }
+    .main-header {
+      position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height); z-index: 100;
+      background-color: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid var(--border-color);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo img { height: 40px; width: auto; display: block; }
 
-        .gallery-section, .intro-section { /* Secciones anteriores sin cambios */ }
-        .gallery-section { padding: 60px 0; background-color: var(--bg-light-gray); border-bottom: 1px solid var(--border-color); }
-        .gallery-header { display: flex; justify-content: center; align-items: center; text-align: center; margin-bottom: 40px; flex-wrap: wrap; gap: 15px; }
-        .gallery-header h2 { font-size: 2.5rem; font-weight: 900; letter-spacing: -1.5px; }
-        .gallery-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
-        .gallery-container::-webkit-scrollbar { display: none; }
-        .gallery-container { scrollbar-width: none; }
-        .slider-item { flex: 0 0 100%; width: 100%; scroll-snap-align: center; padding: 0 10px; }
-        .model-viewer-wrapper {
-            border-radius: 24px; overflow: hidden;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
-            border: 1px solid var(--border-color); background-color: white;
-            width: 100%; aspect-ratio: 16 / 10;
-            max-height: 70vh;
-            display: flex; justify-content: center; align-items: center;
-        }
-        .model-viewer { width: 100%; height: 100%; border: 0; display: block; border-radius: 12px; }
-        .gallery-controls { display: flex; justify-content: space-between; align-items: center; padding: 25px 10px 0 10px; }
-        .gallery-controls button { background: transparent; border: none; cursor: pointer; padding: 10px; }
-        .gallery-controls button svg { width: 32px; height: 32px; color: var(--secondary-text-color); transition: color 0.3s; }
-        .gallery-controls button:hover svg { color: var(--primary-text-color); }
-        #model-title { font-size: 1.5rem; font-weight: 700; text-align: center; color: var(--primary-text-color); }
-        .intro-section { background-color: var(--bg-color); text-align: center; padding: 80px 20px; }
-        .intro-content { max-width: 750px; margin: 0 auto; }
-        .intro-content h1 { font-size: 2.8rem; font-weight: 900; line-height: 1.1; letter-spacing: -2px; margin-bottom: 15px; }
-        .intro-content p { font-size: 1.2rem; line-height: 1.6; color: var(--secondary-text-color); max-width: 650px; margin: 0 auto 30px auto; }
-        
-        .main-footer {
-            position: fixed; bottom: 0; left: 0; width: 100%; z-index: 998;
-            background-color: rgba(247, 247, 255, 0.95);
-            border-top: 1px solid var(--border-color);
-            padding: 8px 20px; display: flex; justify-content: center; align-items: center;
-            gap: 10px; font-size: 0.8rem; color: var(--secondary-text-color); text-align: center;
-        }
-        .main-footer a { color: var(--secondary-text-color); display: inline-flex; align-items: center; transition: color 0.3s ease; text-decoration: none; }
-        .main-footer a:hover { color: var(--primary-text-color); }
-        .main-footer svg { width: 18px; height: 18px; fill: currentColor; }
-        .reveal-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.8s var(--ease-out-quint), transform 0.8s var(--ease-out-quint); will-change: transform, opacity; }
-        .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+    .cta-button {
+      text-decoration: none; padding: 10px 24px; border-radius: 100px;
+      font-weight: 700; font-size: 0.9rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: inline-flex; align-items: center; justify-content: center;
+      border: none; cursor: pointer;
+      background-color: var(--accent-color); color: var(--primary-text-color);
+    }
+    .cta-button:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
 
-        /* --- NUEVA SECCIÓN DE AR CON EL MÉTODO DE GOOGLE --- */
-        .ar-section {
-            padding: 80px 20px;
-            text-align: center;
-            border-top: 1px solid var(--border-color);
-        }
-        .ar-section h2 {
-            font-size: 2.5rem; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 10px;
-        }
-        .ar-section p {
-            font-size: 1.1rem; color: var(--secondary-text-color); max-width: 600px; margin: 0 auto 40px auto;
-        }
-        .model-card {
-            background-color: var(--bg-light-gray);
-            border-radius: 24px;
-            border: 1px solid var(--border-color);
-            padding: 30px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        .model-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-        }
-        .model-card-description {
-            color: var(--secondary-text-color);
-            margin-bottom: 30px;
-        }
-        .ar-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .ar-link svg {
-            width: 24px;
-            height: 24px;
-        }
-    </style>
+    /* ---- VISOR 3D ---- */
+    #viewer-container {
+      width: 100%; aspect-ratio: 16 / 9; position: relative;
+      background-color: var(--bg-light-gray);
+      border-radius: 24px; border: 1px solid var(--border-color);
+    }
+    #main-viewer {
+      width: 100%; height: 100%; border-radius: 24px;
+    }
+    #ar-button {
+      position: absolute; bottom: 20px; left: 50%;
+      transform: translateX(-50%); z-index: 100;
+      background-color: var(--penagos-purple); color: white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      align-items: center; gap: 8px;
+      display: none; /* se activa con JS */
+    }
+    #ar-button svg { width: 20px; height: 20px; }
+    #viewer-status { width: 100%; text-align: center; margin-top: 25px; color: var(--secondary-text-color); }
+
+    /* ---- Fake AR ---- */
+    #fake-ar {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: black;
+      z-index: 2000;
+    }
+    #fake-ar video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
+    #fake-ar model-viewer {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 2;
+      background: transparent;
+    }
+    #close-fake-ar {
+      position: absolute;
+      top: 20px; right: 20px;
+      z-index: 3;
+      padding: 10px 20px;
+      border-radius: 100px;
+      border: none;
+      background: red;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <div id="splash-screen">
-        <div class="splash-content">
-            <div class="splash-logo">
-                <img src="https://penagos.com/wp-content/uploads/2020/04/logo-2.png" alt="Logo Penagos" width="250" height="71">
-            </div>
-            <p class="splash-slogan">Ingeniería de Precisión para el Grano Perfecto.</p>
-        </div>
-        <div class="splash-loader">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297 24 5.67 18.627.297 12 .297z"/></svg>
-            <p><a href="https://github.com/legend20021" target="_blank" rel="noopener noreferrer">@legend20021</a></p>
-        </div>
-    </div>
-    <div class="page-content">
-        <header class="main-header">
-            <a href="#" class="logo">
-                <img src="https://penagos.com/wp-content/uploads/2020/04/logo-2.png" alt="Logo Penagos" width="140" height="40">
-            </a>
-        </header>
-        <main>
-            <section id="gallery" class="gallery-section">
-                </section>
-            <section id="intro" class="intro-section">
-                </section>
+  <header class="main-header">
+    <a href="#" class="logo">
+      <img src="https://penagos.com/wp-content/uploads/2020/04/logo-2.png" alt="Logo Penagos" width="140" height="40">
+    </a>
+  </header>
 
-            <section id="ar-viewer" class="ar-section">
-                <div class="container">
-                    <div class="viewer-header reveal-on-scroll">
-                        <h2>Proyectar en Realidad Aumentada</h2>
-                        <p>Usa la cámara de tu celular para ver nuestros modelos en tu propio espacio, tal como lo hace Google.</p>
-                    </div>
-                    
-                    <div id="ar-model-list" class="reveal-on-scroll">
-                        <div class="model-card">
-                            <h3>Biomaster 300</h3>
-                            <p class="model-card-description">Haz clic en el botón para abrir el visor de Realidad Aumentada en tu dispositivo.</p>
-                            <a id="ar-link-biomaster-300" class="cta-button ar-link" href="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5M6.75 20.25h10.5a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6v12a2.25 2.25 0 002.25 2.25z" />
-                                </svg>
-                                Proyectar en mi espacio
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            </main>
-        <footer class="main-footer">
-            <p>Desarrollado por Jonathan Jerez</p>
-            <a href="https://github.com/legend20021" target="_blank" rel="noopener noreferrer" aria-label="Perfil de GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297 24 5.67 18.627.297 12 .297z"/></svg></a>
-        </footer>
-    </div>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Script para animaciones y splash screen (sin cambios)
-            (() => {
-                const splashScreen = document.getElementById('splash-screen');
-                const pageContent = document.querySelector('.page-content');
-                setTimeout(() => {
-                    splashScreen?.classList.add('hidden');
-                    pageContent?.classList.add('visible');
-                }, 2500);
+  <main>
+    <section id="custom-viewer" class="custom-viewer-section">
+      <div class="container">
+        <h2>Visor de Modelos 3D</h2>
+        <p>En Android podrás ver en AR directo, en iPhone se usa un modo alternativo sin .usdz.</p>
 
-                const revealObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('is-visible');
-                            revealObserver.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.1 });
-                document.querySelectorAll('.reveal-on-scroll').forEach(el => revealObserver.observe(el));
-            })();
-
-            // --- INICIO: SCRIPT PARA CONSTRUIR LOS ENLACES DE AR ---
+        <div id="viewer-container">
+          <model-viewer id="main-viewer"
+            src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+            alt="Un modelo 3D de un astronauta"
+            ar
+            ar-modes="webxr scene-viewer quick-look"
+            camera-controls
+            auto-rotate>
             
-            // Define tus modelos aquí
-            const models = {
-                "biomaster-300": {
-                    title: "Biomaster 300",
-                    url: "https://raw.githubusercontent.com/legend20021/Galery_penagos/main/3D/biomaster_300.glb"
-                },
-                // Puedes añadir tus otros modelos aquí, por ejemplo:
-                // "biomaster-1000": {
-                //     title: "Biomaster 1000 FULL",
-                //     url: "https://raw.githubusercontent.com/legend20021/Galery_penagos/main/3D/biomaster_1000%20DRACO.glb"
-                // }
-            };
+            <button slot="ar-button" id="ar-button" class="cta-button">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5M6.75 20.25h10.5a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6v12a2.25 2.25 0 002.25 2.25z"/>
+              </svg>
+              Ver en tu espacio
+            </button>
+          </model-viewer>
+        </div>
 
-            // Función para construir el enlace de Scene Viewer
-            function createArLink(model) {
-                const encodedUrl = encodeURIComponent(model.url);
-                const encodedTitle = encodeURIComponent(model.title);
-                // Construimos el enlace con todos los parámetros necesarios
-                return `https://arvr.google.com/scene-viewer/web?file=${encodedUrl}&title=${encodedTitle}&mode=ar_only`;
-            }
+        <div id="viewer-status">Cargando visor...</div>
+      </div>
+    </section>
+  </main>
 
-            // Asignamos el enlace al botón correspondiente
-            const arLinkElement = document.getElementById('ar-link-biomaster-300');
-            if (arLinkElement) {
-                arLinkElement.href = createArLink(models["biomaster-300"]);
-            }
-            
-        });
-    </script>
+  <!-- Fake AR Overlay -->
+  <div id="fake-ar">
+    <video id="camera-feed" autoplay playsinline></video>
+    <model-viewer id="fake-ar-viewer"
+      src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+      camera-controls auto-rotate>
+    </model-viewer>
+    <button id="close-fake-ar">Cerrar AR</button>
+  </div>
+
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const modelViewer = document.getElementById("main-viewer");
+      const arButton = document.getElementById("ar-button");
+      const viewerStatus = document.getElementById("viewer-status");
+
+      const fakeAR = document.getElementById("fake-ar");
+      const fakeARViewer = document.getElementById("fake-ar-viewer");
+      const closeFakeAR = document.getElementById("close-fake-ar");
+      const cameraFeed = document.getElementById("camera-feed");
+
+      function isIOS() {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      }
+
+      modelViewer.addEventListener("load", () => {
+        viewerStatus.textContent = "¡Listo! Haz clic en 'Ver en tu espacio'.";
+        arButton.style.display = "inline-flex";
+      });
+
+      arButton.addEventListener("click", () => {
+        if (modelViewer.canActivateAR && !isIOS()) {
+          modelViewer.activateAR();
+        } else {
+          // Fake AR fallback
+          fakeAR.style.display = "block";
+          fakeARViewer.src = modelViewer.src;
+          navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+            .then(stream => {
+              cameraFeed.srcObject = stream;
+            })
+            .catch(err => {
+              console.error("Error al abrir cámara:", err);
+            });
+        }
+      });
+
+      closeFakeAR.addEventListener("click", () => {
+        fakeAR.style.display = "none";
+        if (cameraFeed.srcObject) {
+          cameraFeed.srcObject.getTracks().forEach(track => track.stop());
+        }
+      });
+    });
+  </script>
 </body>
 </html>
