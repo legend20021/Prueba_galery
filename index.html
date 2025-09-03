@@ -1,209 +1,64 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Penagos | Galería de Modelos</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://www.lookiar.com">
-  <link rel="preconnect" href="https://ajax.googleapis.com">
-
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-color: #ffffff;
-      --bg-light-gray: #f7f7ff;
-      --primary-text-color: #1d1d1f;
-      --secondary-text-color: #555555;
-      --accent-color: #FAB900;
-      --penagos-blue: #00AEEF;
-      --penagos-purple: #4D2D8F;
-      --border-color: #e5e5e5;
-      --font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
-      --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
-      --header-height: 70px;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font-family);
-      background-color: var(--bg-color);
-      color: var(--primary-text-color);
-      overflow-x: hidden;
-      padding-top: var(--header-height);
-      padding-bottom: 100px;
-    }
-
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-
-    .main-header {
-      position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height); z-index: 100;
-      background-color: rgba(255, 255, 255, 0.95);
-      border-bottom: 1px solid var(--border-color);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .logo img { height: 40px; width: auto; display: block; }
-
-    .cta-button {
-      text-decoration: none; padding: 10px 24px; border-radius: 100px;
-      font-weight: 700; font-size: 0.9rem;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      display: inline-flex; align-items: center; justify-content: center;
-      border: none; cursor: pointer;
-      background-color: var(--accent-color); color: var(--primary-text-color);
-    }
-    .cta-button:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-
-    /* ---- VISOR 3D ---- */
-    #viewer-container {
-      width: 100%; aspect-ratio: 16 / 9; position: relative;
-      background-color: var(--bg-light-gray);
-      border-radius: 24px; border: 1px solid var(--border-color);
-    }
-    #main-viewer {
-      width: 100%; height: 100%; border-radius: 24px;
-    }
-    #ar-button {
-      position: absolute; bottom: 20px; left: 50%;
-      transform: translateX(-50%); z-index: 100;
-      background-color: var(--penagos-purple); color: white;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      align-items: center; gap: 8px;
-      display: none; /* se activa con JS */
-    }
-    #ar-button svg { width: 20px; height: 20px; }
-    #viewer-status { width: 100%; text-align: center; margin-top: 25px; color: var(--secondary-text-color); }
-
-    /* ---- Fake AR ---- */
-    #fake-ar {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: black;
-      z-index: 2000;
-    }
-    #fake-ar video {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      z-index: 1;
-    }
-    #fake-ar model-viewer {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 2;
-      background: transparent;
-    }
-    #close-fake-ar {
-      position: absolute;
-      top: 20px; right: 20px;
-      z-index: 3;
-      padding: 10px 20px;
-      border-radius: 100px;
-      border: none;
-      background: red;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visor AR Multiplataforma | Penagos</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        h1 {
+            color: #1d1d1f;
+            margin-bottom: 1rem;
+        }
+        p {
+            color: #555;
+            max-width: 90%;
+            margin-bottom: 2rem;
+        }
+        model-viewer {
+            width: 90%;
+            height: 65%;
+            max-width: 800px;
+            max-height: 600px;
+            border-radius: 16px;
+            border: 1px solid #ddd;
+            background-color: #ffffff;
+            --poster-color: #ffffff; /* Color de fondo mientras carga */
+        }
+    </style>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 </head>
 <body>
-  <header class="main-header">
-    <a href="#" class="logo">
-      <img src="https://penagos.com/wp-content/uploads/2020/04/logo-2.png" alt="Logo Penagos" width="140" height="40">
-    </a>
-  </header>
 
-  <main>
-    <section id="custom-viewer" class="custom-viewer-section">
-      <div class="container">
-        <h2>Visor de Modelos 3D</h2>
-        <p>En Android podrás ver en AR directo, en iPhone se usa un modo alternativo sin .usdz.</p>
+    <h1>Visor 3D Interactivo y AR</h1>
+    <p>Gira el modelo con tu dedo. Si estás en un celular, presiona el botón de AR para verlo en tu espacio.</p>
 
-        <div id="viewer-container">
-          <model-viewer id="main-viewer"
-            src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-            alt="Un modelo 3D de un astronauta"
-            ar
-            ar-modes="webxr scene-viewer quick-look"
-            camera-controls
-            auto-rotate>
-            
-            <button slot="ar-button" id="ar-button" class="cta-button">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5M6.75 20.25h10.5a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6v12a2.25 2.25 0 002.25 2.25z"/>
-              </svg>
-              Ver en tu espacio
-            </button>
-          </model-viewer>
-        </div>
+    <model-viewer 
+        src="https://legend20021.github.io/Galery_penagos/3D/Selecto.glb"
+        alt="Modelo 3D de la máquina Selecto de Penagos"
+        
+        ar
+        ar-modes="webxr scene-viewer quick-look"
+        camera-controls
+        auto-rotate
+        
+        poster="https://penagos.com/wp-content/uploads/2020/04/logo-2.png"
+        shadow-intensity="1"
+        environment-image="neutral"
+        exposure="1.2">
+            </model-viewer>
 
-        <div id="viewer-status">Cargando visor...</div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Fake AR Overlay -->
-  <div id="fake-ar">
-    <video id="camera-feed" autoplay playsinline></video>
-    <model-viewer id="fake-ar-viewer"
-      src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
-      camera-controls auto-rotate>
-    </model-viewer>
-    <button id="close-fake-ar">Cerrar AR</button>
-  </div>
-
-  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const modelViewer = document.getElementById("main-viewer");
-      const arButton = document.getElementById("ar-button");
-      const viewerStatus = document.getElementById("viewer-status");
-
-      const fakeAR = document.getElementById("fake-ar");
-      const fakeARViewer = document.getElementById("fake-ar-viewer");
-      const closeFakeAR = document.getElementById("close-fake-ar");
-      const cameraFeed = document.getElementById("camera-feed");
-
-      function isIOS() {
-        return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-      }
-
-      modelViewer.addEventListener("load", () => {
-        viewerStatus.textContent = "¡Listo! Haz clic en 'Ver en tu espacio'.";
-        arButton.style.display = "inline-flex";
-      });
-
-      arButton.addEventListener("click", () => {
-        if (modelViewer.canActivateAR && !isIOS()) {
-          modelViewer.activateAR();
-        } else {
-          // Fake AR fallback
-          fakeAR.style.display = "block";
-          fakeARViewer.src = modelViewer.src;
-          navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-            .then(stream => {
-              cameraFeed.srcObject = stream;
-            })
-            .catch(err => {
-              console.error("Error al abrir cámara:", err);
-            });
-        }
-      });
-
-      closeFakeAR.addEventListener("click", () => {
-        fakeAR.style.display = "none";
-        if (cameraFeed.srcObject) {
-          cameraFeed.srcObject.getTracks().forEach(track => track.stop());
-        }
-      });
-    });
-  </script>
 </body>
 </html>
